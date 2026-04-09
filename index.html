@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KMK Recording Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0f0e0d;
+  --ink-mid:#4a4845;
+  --ink-light:#8a8785;
+  --paper:#f7f5f0;
+  --paper-warm:#efe9df;
+  --paper-card:#faf8f4;
+  --accent:#2d1a0e;
+  --accent-warm:#c4814a;
+  --border:#ddd8cf;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',-apple-system,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.7;min-width:320px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(247,245,240,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 clamp(1.5rem,5vw,4rem)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:1rem}
+.nav-brand{display:flex;flex-direction:column;gap:0}
+.nav-brand-sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);font-family:var(--mono)}
+.nav-brand-name{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.04em;color:var(--ink)}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mid);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;background:var(--accent);color:#f7f5f0;border-radius:2px;text-decoration:none;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+
+/* HERO */
+.hero{max-width:1200px;margin:0 auto;padding:clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,4rem) clamp(3rem,8vw,6rem);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--ink-light)}
+.hero-title{font-family:var(--serif);font-size:clamp(2.8rem,5vw,4.5rem);font-weight:300;line-height:1.15;letter-spacing:-.01em;color:var(--ink);margin-bottom:1.5rem}
+.hero-title em{font-style:normal;color:var(--accent-warm)}
+.hero-desc{color:var(--ink-mid);font-size:15px;line-height:1.8;max-width:440px;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:12px 24px;background:var(--accent);color:#f7f5f0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-secondary{display:inline-flex;align-items:center;gap:.5rem;padding:12px 24px;border:1px solid var(--border);color:var(--ink-mid);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all .2s}
+.btn-secondary:hover{border-color:var(--ink-mid);color:var(--ink)}
+.hero-visual{display:flex;flex-direction:column;gap:.75rem}
+.hero-img-box{background:var(--paper-warm);border:1px solid var(--border);border-radius:3px;height:320px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem}
+.hero-img-box .icon-wrap{width:52px;height:52px;border:1px dashed var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hero-img-box p{font-family:var(--mono);font-size:11px;color:var(--ink-light);letter-spacing:.05em}
+.hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.meta-card{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:1rem 1.25rem}
+.meta-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.35rem}
+.meta-val{font-size:13px;color:var(--ink);font-weight:500}
+
+/* SECTIONS */
+section{padding:clamp(3rem,8vw,6rem) clamp(1.5rem,5vw,4rem)}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-head{margin-bottom:3rem}
+.section-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem}
+.section-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--ink-light)}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;letter-spacing:-.01em;color:var(--ink);line-height:1.2}
+.section-desc{margin-top:.75rem;color:var(--ink-mid);max-width:560px;font-size:14px}
+
+/* FEATURED */
+#featured{background:var(--paper-warm)}
+.featured-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.featured-item{background:var(--paper-card);padding:1.5rem;transition:background .2s}
+.featured-item:hover{background:#fff}
+.featured-type{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.5rem}
+.featured-title{font-size:14px;font-weight:500;color:var(--ink);line-height:1.5}
+.featured-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:.75rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);text-decoration:none;transition:color .2s}
+.featured-link:hover{color:var(--accent-warm)}
+.featured-link svg{width:12px;height:12px}
+
+/* WORKS */
+.works-grid{display:grid;grid-template-columns:5fr 3fr;gap:1.5rem}
+.card{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:2rem}
+.card-title{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:1.5rem;color:var(--ink)}
+.work-group{margin-bottom:2rem}
+.work-group:last-child{margin-bottom:0}
+.work-role{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);border:1px solid var(--accent-warm);padding:3px 10px;border-radius:2px;margin-bottom:.75rem}
+.work-artist{font-size:13px;color:var(--ink-mid);line-height:1.8;padding-left:.75rem;border-left:1px solid var(--border)}
+.side-stack{display:flex;flex-direction:column;gap:1.5rem}
+.yt-btn{display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--border);color:var(--ink-mid);text-decoration:none;border-radius:2px;transition:all .2s}
+.yt-btn:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ABOUT */
+#about{background:var(--paper-warm)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.about-card{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:2rem}
+.about-card.full{grid-column:1/-1}
+.about-card-title{font-family:var(--serif);font-size:1.15rem;font-weight:400;margin-bottom:1rem;color:var(--ink);padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.about-text{font-size:14px;color:var(--ink-mid);line-height:1.85}
+.about-text p+p{margin-top:.85rem}
+.career-item{display:flex;gap:1.25rem;font-size:13px;color:var(--ink-mid);padding:.5rem 0;border-bottom:1px solid var(--border)}
+.career-item:last-child{border-bottom:none}
+.career-year{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-light);white-space:nowrap;padding-top:.1rem}
+
+/* STUDIO */
+.studio-grid{display:grid;grid-template-columns:3fr 2fr;gap:1.5rem}
+.studio-card{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:2rem}
+.studio-img{background:var(--paper-warm);border:1px solid var(--border);border-radius:3px;height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}
+.studio-img p{font-family:var(--mono);font-size:11px;color:var(--ink-light);letter-spacing:.05em}
+.studio-text{font-size:14px;color:var(--ink-mid);line-height:1.85}
+.studio-text p+p{margin-top:.85rem}
+.pdf-btn{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:1px solid var(--border);color:var(--ink-mid);background:none;border-radius:2px;cursor:pointer;transition:all .2s;text-decoration:none}
+.pdf-btn:hover{border-color:var(--ink-mid);color:var(--ink)}
+
+/* PRICE */
+#price{background:var(--paper-warm)}
+.price-grid{display:grid;grid-template-columns:2fr 3fr;gap:1.5rem}
+.price-card{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:2rem}
+.price-items{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:2px;overflow:hidden}
+.price-item{background:var(--paper-card);padding:1rem 1.25rem}
+.price-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.4rem}
+.price-val{font-family:var(--serif);font-size:1.25rem;color:var(--ink);font-weight:400}
+.price-note{margin-top:1.5rem;padding:1rem 1.25rem;background:var(--paper-warm);border-left:2px solid var(--accent-warm);font-size:13px;color:var(--ink-mid);line-height:1.7}
+.price-actions{margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:1.5rem}
+.faq-item{background:var(--paper-card);padding:1.75rem 2rem}
+.faq-q{font-family:var(--serif);font-size:1.05rem;color:var(--ink);margin-bottom:.6rem}
+.faq-a{font-size:13.5px;color:var(--ink-mid);line-height:1.8}
+.faq-ref{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:1.75rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.faq-ref-text{font-size:14px;color:var(--ink-mid)}
+.yt-channel{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px;border:1px solid var(--border);color:var(--ink-mid);text-decoration:none;border-radius:2px;transition:all .2s}
+.yt-channel:hover{border-color:var(--ink);color:var(--ink)}
+
+/* CONTACT */
+#contact{background:var(--paper-warm)}
+.contact-grid{display:grid;grid-template-columns:2fr 3fr;gap:1.5rem}
+.contact-col{display:flex;flex-direction:column;gap:1.5rem}
+.contact-card{background:var(--paper-card);border:1px solid var(--border);border-radius:3px;padding:2rem}
+.contact-title{font-family:var(--serif);font-size:1.15rem;font-weight:400;margin-bottom:1.25rem;color:var(--ink);padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.contact-links{display:flex;flex-direction:column;gap:.85rem}
+.contact-link{display:flex;align-items:center;gap:.75rem;font-size:13px;color:var(--ink-mid);text-decoration:none;transition:color .2s}
+.contact-link:hover{color:var(--ink)}
+.contact-link svg{width:15px;height:15px;flex-shrink:0;color:var(--ink-light)}
+.contact-ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.contact-ul li{font-size:13px;color:var(--ink-mid);display:flex;gap:.5rem}
+.contact-ul li::before{content:'—';color:var(--ink-light)}
+.contact-block{background:var(--paper-warm);border-radius:2px;padding:1.25rem 1.5rem;margin-top:1rem}
+.contact-block-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.5rem}
+.contact-block-items{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.contact-block-items li{font-size:13px;color:var(--ink-mid);display:flex;gap:.5rem}
+.contact-block-items li::before{content:'·';color:var(--ink-light)}
+.template-box{background:var(--accent);color:#f0ede5;border-radius:3px;padding:1.5rem;font-family:var(--mono);font-size:12px;line-height:1.9;margin-top:1rem}
+.template-box .t-section{margin-top:.75rem;color:var(--accent-warm);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2.5rem clamp(1.5rem,5vw,4rem)}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.footer-brand{font-family:var(--serif);font-size:1rem;color:var(--ink)}
+.footer-copy{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-light)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero,.works-grid,.about-grid,.studio-grid,.price-grid,.contact-grid{grid-template-columns:1fr}
+  .hero-visual,.about-card.full{grid-column:auto}
+  .nav-links{display:none}
+}
+@media(max-width:600px){
+  .hero-meta,.price-items{grid-template-columns:1fr}
+  .price-actions,.hero-actions{flex-direction:column}
+  .faq-ref{flex-direction:column}
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero>*{animation:fadeUp .55s ease both}
+.hero>*:nth-child(2){animation-delay:.1s}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="nav-brand-sub">KMK Recording Service</span>
+      <span class="nav-brand-name">加茂 弘祐</span>
+    </div>
+    <div class="nav-links">
+      <a href="#featured">Works</a>
+      <a href="#about">About</a>
+      <a href="#studio">Studio</a>
+      <a href="#price">Price</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">お問い合わせ</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" style="padding:0">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">Recording / Mixing / Mastering / PA / MA / Location Sound</div>
+      <h1 class="hero-title">音はコミュニケーション<em>から</em><br>始まる。</h1>
+      <p class="hero-desc">レコーディング、ミックス、マスタリング、PA、MA、現場音声など、幅広い音響業務に対応しています。</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          お問い合わせ
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#featured" class="btn-secondary">実績を見る</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-box">
+        <div class="icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ink-light)" stroke-width="1.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v5M8 23h8"/></svg>
+        </div>
+        <p>顔写真 または SSL卓の写真を配置</p>
+      </div>
+      <div class="hero-meta">
+        <div class="meta-card">
+          <div class="meta-label">拠点</div>
+          <div class="meta-val">中ノ峠ミュージック・ラボ<br><span style="font-size:11px;color:var(--ink-light)">石川県小松市</span></div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-label">主な分野</div>
+          <div class="meta-val">Band Recording<br><span style="font-size:11px;color:var(--ink-light)">Mixing / PA / MA</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED WORKS -->
+<section id="featured">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Featured Works</div>
+      <h2 class="section-title">代表実績</h2>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-item">
+        <div class="featured-type">Album / Recording, Mixing</div>
+        <div class="featured-title">プランプラム – まあるいおねがい</div>
+      </div>
+      <div class="featured-item">
+        <div class="featured-type">Album / Recording, Mixing</div>
+        <div class="featured-title">CISSE – ROCK KIDS DAYDREAM</div>
+      </div>
+      <div class="featured-item">
+        <div class="featured-type">Album / Recording, Mixing</div>
+        <div class="featured-title">サカナノメ – ツナ缶2合</div>
+      </div>
+      <div class="featured-item">
+        <div class="featured-type">Single / Mixing</div>
+        <div class="featured-title">ハズレチ – 春あらし</div>
+      </div>
+      <div class="featured-item">
+        <div class="featured-type">Movie / MA</div>
+        <div class="featured-title">五箇山和紙×アニメーション！伝統が未来へつながる瞬間</div>
+        <a href="https://www.youtube.com/watch?v=SkTZSsj7HgM" target="_blank" class="featured-link">
+          YouTubeで見る
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+      <div class="featured-item">
+        <div class="featured-type">Live Event / PA</div>
+        <div class="featured-title">福井県 森フェス</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Works</div>
+      <h2 class="section-title">音源実績 / 映像実績</h2>
+      <p class="section-desc">Recording / Mixing / Mastering を中心に、音源制作・映像音声・PAの実績を掲載しています。</p>
+    </div>
+    <div class="works-grid">
+      <div class="card">
+        <div class="card-title">音源実績</div>
+        <div class="work-group">
+          <div class="work-role">Rec / Mix / Master</div>
+          <div class="work-artist">
+            プランプラム（the U、三十一、ビッグバンに乗って、然らば風の人、Lovers on Monday、メモリーをうたえば）<br>
+            サカナノメ（また明日、グッバイイエロー、8月病、口約束）<br>
+            ラフアライト（日々を過ごす、命燃やして）<br>
+            Flux-As（04、ナイトスカイ）<br>
+            CONY（金木犀、月とブリキ）<br>
+            仄現（KICK、逃げ出したい夜に、worker、涙の栞、大人にはならない、ネイビー、car stereo）<br>
+            Makotosan（青い雪、赤いうさぎ、白い空）<br>
+            Arcy cat（結露、時として）<br>
+            microphone motors（923、Bullshit、dogs、flexy、scratch）<br>
+            シープライズ（離れてもまた）／ メランコリーハイ（そらごと）／ SoundsError（Eternity）<br>
+            BootyCheek（ジャガー・ショー）／ akarisaki（いつか、Evergreen）<br>
+            SIKKE（help!!、My Room Waltz、adieu、向日葵）<br>
+            CISSE（DAYDREAMKIDS）／ サスティーンズ（白紙、終バスとイヤホン）<br>
+            ヤスヒロリキ（金曜日）／ Haunt（lost）／ イフカ（レコード）<br>
+            Celltone（セカンドパラレル、烈光）他
+          </div>
+        </div>
+        <div class="work-group">
+          <div class="work-role">Mix</div>
+          <div class="work-artist">
+            ハズレチ（何者、青のプロローグ、春あらし）<br>
+            携帯ピコ（つきめ、トーマス）
+          </div>
+        </div>
+      </div>
+      <div class="side-stack">
+        <div class="card">
+          <div class="card-title">映像 / MA</div>
+          <div style="font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.75rem">Movie / MA</div>
+          <div style="font-size:14px;color:var(--ink);line-height:1.6">五箇山和紙×アニメーション！<br>伝統が未来へつながる瞬間</div>
+          <div style="margin-top:.5rem;font-size:12px;color:var(--ink-light);line-height:1.5">Gokayama Washi × Animation!<br>Bringing Ancient Tradition into the Future</div>
+          <a href="https://www.youtube.com/watch?v=SkTZSsj7HgM" target="_blank" class="yt-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            YouTubeで見る
+          </a>
+        </div>
+        <div class="card">
+          <div class="card-title">PA</div>
+          <div style="font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.75rem">Live Event / PA</div>
+          <div style="font-size:14px;font-weight:500;color:var(--ink)">福井県 森フェス</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">About</div>
+      <h2 class="section-title">加茂 弘祐</h2>
+      <p class="section-desc">音と人のあいだにある温度感まで含めて、心地よい制作環境を目指しています。</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-title">経歴</div>
+        <div style="display:flex;flex-direction:column">
+          <div class="career-item"><span class="career-year">1996</span><span>石川県生まれ</span></div>
+          <div class="career-item"><span class="career-year">2016</span><span>フリーダムスタジオにて研鑽を積む</span></div>
+          <div class="career-item"><span class="career-year">2018</span><span>パワーハウススタジオにてさらに経験を重ねる</span></div>
+          <div class="career-item"><span class="career-year">2022</span><span>中ノ峠ミュージック・ラボのエンジニア・管理人を担当</span></div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-title">得意ジャンル</div>
+        <div class="about-text">
+          <p>Rock、Pop、バンドサウンドを中心とした案件を多く担当しています。その一方で、ジャンルにとらわれず、楽曲ごとに最適な音作りを目指しています。</p>
+        </div>
+      </div>
+      <div class="about-card full">
+        <div class="about-card-title">音への考え方・仕事のスタンス</div>
+        <div class="about-text" style="column-count:2;column-gap:2.5rem">
+          <p>レコーディングは長い時間を同じ空間で過ごすからこそ、息苦しさのない、安心して集中できる空気づくりを大切にしています。</p>
+          <p>ミュージシャンがどんな作品を作りたいのか、どんなイメージを持っているのかを丁寧に汲み取り、認識のずれが生まれないようコミュニケーションを重ねながら制作を進めます。</p>
+          <p>PAやMAにおいても、主催者やディレクターがそのイベントや作品に込めた意図を考えたうえで、自分の個性も活かしながら、より良い形を目指しています。</p>
+          <p>初めての方から経験豊富な方まで、どなたでも気軽にご相談いただけたら嬉しいです。内容や予算、進め方も含めて一緒に考えながら、その人に合った形で制作を進めていきます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO -->
+<section id="studio">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Studio</div>
+      <h2 class="section-title">中ノ峠ミュージック・ラボ</h2>
+      <p class="section-desc">山の空気と宿泊環境に包まれながら、集中して音楽制作に向き合える場所です。</p>
+    </div>
+    <div class="studio-grid">
+      <div class="studio-card">
+        <div class="studio-text">
+          <p>中ノ峠ミュージック・ラボは、涼しい山中にあるリゾートレコーディングスタジオです。広いコントロールルームにはSSL 4000Eを設置し、約40畳のブースではゆったりとした空間でレコーディングに没頭できます。</p>
+          <p>宿泊施設へは建物の外に出ることなく直接行き来でき、集中して音楽制作にのめり込むのにぴったりの環境です。</p>
+          <p>宿泊施設ピチカートは、最大15人まで宿泊できる広々とした貸切型の宿泊施設です。キッチンも完備しているため、食材を持ち込んで自分たちで料理を楽しむこともできます。</p>
+          <p>周囲には豊かな自然が広がっており、涼しい山の中でのびのびとリラックスしながら制作に向き合えます。</p>
+        </div>
+      </div>
+      <div class="side-stack">
+        <div class="studio-img">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--ink-light)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p>スタジオ写真</p>
+          <p style="font-size:10px">コントロールルーム / ブース / 宿泊施設</p>
+        </div>
+        <div class="studio-card">
+          <div class="card-title" style="font-family:var(--serif);font-size:1.1rem;margin-bottom:.75rem">設備</div>
+          <div style="font-size:13px;color:var(--ink-mid);line-height:1.7">機材表PDFは後から差し替え可能です。「機材表をダウンロード」ボタンを設置できます。</div>
+          <a href="#" class="pdf-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            機材表PDF（準備中）
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section id="price">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Price</div>
+      <h2 class="section-title">料金</h2>
+      <p class="section-desc">内容によって前後する場合があります。まずはお気軽にご相談ください。</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="card-title" style="font-family:var(--serif);font-size:1.1rem;margin-bottom:1rem">料金の考え方</div>
+        <div style="font-size:14px;color:var(--ink-mid);line-height:1.85">
+          <p>料金は、作業時間・人数・必要機材・納品形式・宿泊の有無などによって変動します。できるだけわかりやすいよう主要な料金を掲載していますが、内容に応じて最適なご提案をいたします。</p>
+          <p style="margin-top:.75rem">初めての方や、何を選べばよいかわからない方もご安心ください。ご相談をもとに内容を整理しながら進めていきます。</p>
+        </div>
+        <div class="price-actions" style="margin-top:1.5rem">
+          <a href="#" class="pdf-btn">詳細料金表PDF（準備中）</a>
+          <a href="#contact" class="btn-primary" style="font-size:11px;padding:9px 18px">見積りを相談する</a>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="card-title" style="font-family:var(--serif);font-size:1.1rem;margin-bottom:1rem">各事業の主要料金</div>
+        <div class="price-items">
+          <div class="price-item"><div class="price-label">レコーディング 14時間</div><div class="price-val">55,000円</div></div>
+          <div class="price-item"><div class="price-label">レコーディング 8時間</div><div class="price-val">38,500円</div></div>
+          <div class="price-item"><div class="price-label">Mix（1曲）</div><div class="price-val">22,000円</div></div>
+          <div class="price-item"><div class="price-label">Mastering（1曲）</div><div class="price-val">5,500円</div></div>
+          <div class="price-item"><div class="price-label">PA（機材込み）1日</div><div class="price-val">55,000円</div></div>
+          <div class="price-item"><div class="price-label">PA（オペレートのみ）1日</div><div class="price-val">27,500円〜</div></div>
+          <div class="price-item"><div class="price-label">MA（15秒CM）</div><div class="price-val">16,500円</div></div>
+          <div class="price-item"><div class="price-label">音声 1日</div><div class="price-val">27,500円〜</div></div>
+        </div>
+        <div class="price-note">ミックスの無料修正は3回まで。それ以降は1回 5,500円にて対応しています。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">FAQ</div>
+      <h2 class="section-title">よくある質問</h2>
+      <p class="section-desc">初めての方にもわかりやすいよう、よくあるご質問をまとめています。</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">初めてでも依頼できますか？</div>
+        <div class="faq-a">もちろんです。何度かやり取りをしながら、内容や予算に合わせて最適な進め方を一緒に考えていきます。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">修正は何回まで可能ですか？</div>
+        <div class="faq-a">ミックスの無料修正は3回までです。それ以降の修正は1回 5,500円にて対応しています。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">宿泊は何人まで可能ですか？</div>
+        <div class="faq-a">宿泊施設ピチカートは最大15人まで宿泊可能です。1人部屋が1つ、2人部屋が2つ、大部屋が1つあります。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">レコーディング前に何を準備すればいいですか？</div>
+        <div class="faq-a">曲名、曲数、録りたい楽器、キー、BPM、デモ、歌詞、構成譜のご準備をお願いしています。詳しくはYouTubeでも解説予定です。</div>
+      </div>
+    </div>
+    <div class="faq-ref">
+      <div class="faq-ref-text">構成譜の書き方など、依頼前の準備に役立つ内容はYouTubeチャンネルでも発信予定です。</div>
+      <a href="https://www.youtube.com/@KMKrecordingservice" target="_blank" class="yt-channel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        YouTubeチャンネルを見る
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-eyebrow">Contact</div>
+      <h2 class="section-title">お問い合わせ</h2>
+      <p class="section-desc">お見積り・ご相談・その他のお問い合わせはこちらからどうぞ。</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-col">
+        <div class="contact-card">
+          <div class="contact-title">連絡先</div>
+          <div class="contact-links">
+            <a href="mailto:kamo.kousuke@gmail.com" class="contact-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+              kamo.kousuke@gmail.com
+            </a>
+            <a href="https://x.com/kamo_kousuke" target="_blank" class="contact-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l16 16M4 20L20 4"/></svg>
+              X: @kamo_kousuke
+            </a>
+            <a href="https://www.instagram.com/kamo.kousuke" target="_blank" class="contact-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              Instagram: @kamo.kousuke
+            </a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-title">依頼時に送ってほしい内容</div>
+          <ul class="contact-ul">
+            <li>お名前</li>
+            <li>メールアドレス</li>
+            <li>電話番号（必要に応じて）</li>
+            <li>ご希望の内容（Recording / Mix / Mastering / PA / MA / 音声）</li>
+            <li>日程または納期</li>
+            <li>わかる範囲の詳細情報</li>
+          </ul>
+        </div>
+      </div>
+      <div class="contact-col">
+        <div class="contact-card">
+          <div class="contact-title">お見積り</div>
+          <div style="font-size:13.5px;color:var(--ink-mid);line-height:1.8">料金のお見積りをご希望の方はこちらからお問い合わせください。日程、内容、人数などをもとに、できるだけ具体的にご案内いたします。</div>
+          <div class="contact-block">
+            <div class="contact-block-label">必要項目の例</div>
+            <ul class="contact-block-items">
+              <li>日程</li><li>人数</li><li>ご依頼内容</li><li>宿泊の有無</li><li>会場や公開媒体</li><li>その他詳細</li>
+            </ul>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-title">ご相談</div>
+          <div style="font-size:13.5px;color:var(--ink-mid);line-height:1.8">プランに当てはまらないご相談や、何をどう依頼すればよいかわからない方はこちらからご相談ください。初めての方にもわかりやすく、一緒に整理しながら進めていきます。</div>
+          <div class="contact-block">
+            <div class="contact-block-label">こんな相談が可能です</div>
+            <ul class="contact-block-items">
+              <li>何を依頼すればいいかわからない</li>
+              <li>予算の中でできることを相談したい</li>
+              <li>初めてのレコーディングで流れを知りたい</li>
+              <li>プラン外の内容を相談したい</li>
+            </ul>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-title">問い合わせテンプレート</div>
+          <div class="template-box">
+            【共通】<br>
+            お名前 / メールアドレス / 電話番号（必要に応じて）
+            <div class="t-section">Recording</div>
+            日付 / 時間 / 録りたい楽器 / 曲数 / 宿泊の有無 / 泊数 / 人数
+            <div class="t-section">Mix</div>
+            曲名 / キー・BPM / 歌詞 / 納品形式 / 納品期限 / リファレンス曲
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">KMK Recording Service ／ 加茂 弘祐</div>
+    <div class="footer-copy">© KMK Recording Service</div>
+  </div>
+</footer>
+
+</body>
+</html>
